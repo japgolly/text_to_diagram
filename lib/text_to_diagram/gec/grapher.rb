@@ -26,11 +26,16 @@ module TextToDiagram::Gec
         "subgraph cluster#{i+=1} {\n#{c.indent 2}\n}"
       end.join("\n\n")
 
+      # Generate externals
+      external_gv= @dsl.externals.map{|l| l+';'}.join("\n")
+
       # Generate complete graph
 %|digraph G {
 #{@style.scope(:normal).to_gv.indent 2}
 
 #{cluster_gv.indent 2}
+
+#{external_gv.indent 2}
 }|
     end
 

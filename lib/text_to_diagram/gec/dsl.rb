@@ -1,10 +1,13 @@
+require 'active_support/inflector'
+
 module TextToDiagram
   module Gec
     class Dsl
-      attr_reader :clusters
+      attr_reader :clusters, :externals
 
       def initialize(style)
         @clusters= []
+        @externals= []
         @style= style
       end
 
@@ -61,6 +64,16 @@ module TextToDiagram
         end
 
         @clusters<< lines.map{|l| l.sub /;?\Z/,';'}.join("\n")
+      end
+
+      def extn(entity_a, entity_b, options={})
+        name= options[:name] || "#{entity_a} #{entity_b.to_s.pluralize}"
+        name= %|"#{name}"|
+        entity_a= %|"#{entity_a}"|
+        entity_b= %|"#{entity_b}"|
+
+        @externals<< %|#{entity_a} -> #{name}|
+        @externals<< %|#{entity_b} -> #{name}|
       end
 
       def disabled; :disabled end

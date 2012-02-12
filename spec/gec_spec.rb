@@ -81,4 +81,30 @@ describe TextToDiagram::Gec::Grapher do
     end
 
   end # context
+
+  context "when generating externals" do
+
+    it "should connection a pair of GEC3s correctly" do
+      gec.parse %|gec3 'User'\n gec3 :Book\n extn :User, :Book|
+      gec.generate_gv.should be_same_graph_as(%|
+        subgraph cluster0 {
+          label = "User (GEC3)";
+          "User";
+          "User Type" -> "User";
+          "User" -> "User->User";
+          "User" -> "User->User";
+        }
+        subgraph cluster1 {
+          label = "Book (GEC3)";
+          "Book";
+          "Book Type" -> "Book";
+          "Book" -> "Book->Book";
+          "Book" -> "Book->Book";
+        }
+        "User" -> "User Books";
+        "Book" -> "User Books";
+      |)
+    end
+
+  end # context
 end
