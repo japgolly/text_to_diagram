@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'gec'
+require 'text_to_diagram/gec'
 
 disabledness= TextToDiagram::Style.default.scope(:gec, :disabled).to_gv
 

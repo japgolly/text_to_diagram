@@ -1,5 +1,5 @@
-require 'gec/dsl'
-require 'style'
+require 'text_to_diagram/gec/dsl'
+require 'text_to_diagram/style'
 
 module TextToDiagram::Gec
   class Grapher

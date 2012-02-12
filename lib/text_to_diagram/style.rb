@@ -16,7 +16,7 @@ module TextToDiagram
 
     def load_defaults!
       @style= {}
-      load_file File.expand_path('../../config/style.yml',__FILE__)
+      load_file File.expand_path('../../../config/style.yml',__FILE__)
       self
     end
 

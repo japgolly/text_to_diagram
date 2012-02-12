@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'style'
+require 'text_to_diagram/style'
 
 describe TextToDiagram::Style do
   #it(:style) {described_class.new}
