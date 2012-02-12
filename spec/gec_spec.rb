@@ -1,10 +1,17 @@
 require 'spec_helper'
 require 'text_to_diagram/gec'
 
-disabledness= TextToDiagram::Style.default.scope(:gec, :disabled).to_gv
 
 describe TextToDiagram::Gec::Grapher do
-  let(:gec) {described_class.new}
+  test_style= TextToDiagram::Style.new.load_file File.expand_path('../style-example1.yml',__FILE__)
+  style_normal= test_style.scope(:gec, :normal)
+  disabledness= test_style.scope(:gec, :disabled).to_gv
+
+  let(:gec) do
+    gec= described_class.new
+    gec.style= test_style
+    gec
+  end
 
   context "when generating a 3-node GEC" do
 
@@ -17,7 +24,7 @@ describe TextToDiagram::Gec::Grapher do
           "User Type" -> "User";
           "User" -> "User-->User";
           "User" -> "User-->User";
-        }|)
+        }|, gec.style)
     end
 
     it "should disable the Type node on request" do
@@ -30,7 +37,7 @@ describe TextToDiagram::Gec::Grapher do
           "User" -> "User-->User";
           #{disabledness}
           "User Type" -> "User";
-        }|)
+        }|, gec.style)
     end
 
     it "should disable the Tree node on request" do
@@ -43,7 +50,7 @@ describe TextToDiagram::Gec::Grapher do
           #{disabledness}
           "User" -> "User-->User";
           "User" -> "User-->User";
-        }|)
+        }|, gec.style)
     end
 
     it "should disable the Type and Tree nodes on request" do
@@ -56,7 +63,7 @@ describe TextToDiagram::Gec::Grapher do
           "User Type" -> "User";
           "User" -> "User-->User";
           "User" -> "User-->User";
-        }|)
+        }|, gec.style)
     end
 
   end # context
@@ -77,7 +84,7 @@ describe TextToDiagram::Gec::Grapher do
           "Contact Type" -> "Contact Type --(Role)--> Contact Type";
           "Contact Role" -> "Contact Type --(Role)--> Contact Type";
           "Contact Role" -> "Contact --(Role)--> Contact";
-        }|)
+        }|, gec.style)
     end
 
   end # context
@@ -103,7 +110,7 @@ describe TextToDiagram::Gec::Grapher do
         }
         "User" -> "User Books";
         "Book" -> "User Books";
-      |)
+      |, gec.style)
     end
 
   end # context

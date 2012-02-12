@@ -12,9 +12,9 @@ module TextToDiagram
         .gsub(/\A\n+|\n+\Z/,'')
     end
 
-    def wrap_graph(inner_graph)
+    def wrap_graph(inner_graph, style)
       %|digraph G {
-        #{TextToDiagram::Style.default.scope(:gec, :normal).to_gv}
+        #{style.scope(:normal).to_gv}
         #{inner_graph}
       }|
     end
@@ -26,10 +26,10 @@ RSpec.configure do |c|
   c.include TextToDiagram::SpecHelpers
 end
 
-RSpec::Matchers.define :be_same_graph_as do |graph|
+RSpec::Matchers.define :be_same_graph_as do |graph, style|
   match do |actual|
     actual= normalise_gv(actual)
-    graph= wrap_graph(graph) unless graph['digraph']
+    graph= wrap_graph(graph, style) unless graph['digraph']
     graph= normalise_gv(graph)
     puts "#{'='*80}\n#{actual}\n#{'='*80}" unless actual == graph
     actual == graph

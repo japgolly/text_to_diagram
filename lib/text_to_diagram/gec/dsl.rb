@@ -5,6 +5,7 @@ module TextToDiagram
   module Gec
     class Dsl
       attr_reader :clusters, :externals
+      attr_accessor :style
 
       def initialize(style)
         @clusters= []

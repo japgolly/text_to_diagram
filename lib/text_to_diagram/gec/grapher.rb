@@ -4,6 +4,8 @@ require 'text_to_diagram/helpers'
 
 module TextToDiagram::Gec
   class Grapher
+    attr_reader :style
+
     def initialize
       reset!
     end
@@ -12,6 +14,11 @@ module TextToDiagram::Gec
       @style= TextToDiagram::Style.default.scope(:gec)
       @dsl= Dsl.new(@style)
       self
+    end
+
+    def style=(style)
+      @style= style[:gec] ? style.scope(:gec) : style
+      @dsl.style= @style
     end
 
     def parse(text)
