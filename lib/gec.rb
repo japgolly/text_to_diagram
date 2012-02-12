@@ -5,32 +5,19 @@ module TextToDiagram
     end
 
     def reset!
-      @clusters= []
-    end
-
-    def parse(text)
-      instance_eval(text)
+      @dsl= GecDsl.new
       self
     end
 
-    def gec3(name,options={})
-      entity= %|"#{name}"|
-      type= %|"#{name} Type"|
-      tree= %|"#{name}->#{name}"|
-
-      lines= []
-      lines<< %|label = "#{name} (GEC3)"|
-      lines<< entity
-      lines<< %|#{type} -> #{entity}|
-      2.times.each{ lines<< %|#{entity} -> #{tree}| }
-
-      @clusters<< lines.map{|l| "#{l};"}.join("\n")
+    def parse(text)
+      @dsl.instance_eval(text)
+      self
     end
 
     def generate_gv
       # Generate clusters
       i= -1
-      cluster_gv= @clusters.map do |c|
+      cluster_gv= @dsl.clusters.map do |c|
         "subgraph cluster#{i+=1} {\n#{c}\n}"
       end.join("\n\n")
 
@@ -44,5 +31,43 @@ edge [arrowhead=dot];
 }|
     end
 
+  end
+
+  class GecDsl
+    attr_reader :clusters
+
+    def initialize
+      @clusters= []
+    end
+
+    def add(options, key, normal, disabled, value)
+      case options[key]
+      when nil then normal
+      when :disabled then disabled
+      else raise "Unsupported value #{options[key].inspect} for #{key} option. Only :disabled is supported."
+      end << value
+    end
+
+    def gec3(name,options={})
+      entity= %|"#{name}"|
+      type= %|"#{name} Type"|
+      tree= %|"#{name}->#{name}"|
+
+      lines= []
+      disabled= []
+      lines<< %|label = "#{name} (GEC3)"|
+      lines<< entity
+      add options, :type, lines, disabled, %|#{type} -> #{entity}|
+      2.times.each{ add options, :tree, lines, disabled, %|#{entity} -> #{tree}| }
+
+      unless disabled.empty?
+        lines<< 'node[fillcolor=lightgrey,fontcolor="#aaaaaa",color="#aaaaaa"]; edge[color="#aaaaaa"]'
+        lines.concat disabled
+      end
+
+      @clusters<< lines.map{|l| "#{l};"}.join("\n")
+    end
+
+    def disabled; :disabled end
   end
 end
