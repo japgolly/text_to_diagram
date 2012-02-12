@@ -1,0 +1,54 @@
+digraph G {
+  rankdir = LR;
+  style = "rounded,filled";
+  color = black;
+  fillcolor = lightgrey;
+  node [color=black, fillcolor=white, shape=box, style="rounded,filled"];
+  edge [arrowhead=dot];
+
+  subgraph cluster0 {
+    label = "Shoe (GEC3)";
+    "Shoe" [fillcolor=lightblue];
+    "Shoe Type" -> "Shoe";
+    "Shoe" -> "Shoe-->Shoe";
+    "Shoe" -> "Shoe-->Shoe";
+  }
+
+  subgraph cluster1 {
+    label = "Food (GEC6)";
+    "Food" [fillcolor=lightblue];
+    "Food" -> "Food:Type mappings";
+    "Food Type" -> "Food:Type mappings";
+    "Food" -> "Food\n--(Role)-->\nFood";
+    "Food" -> "Food\n--(Role)-->\nFood";
+    "Food Type" -> "Food Type --(Role)--> Food Type";
+    "Food Type" -> "Food Type --(Role)--> Food Type";
+    "Food Role" -> "Food Type --(Role)--> Food Type";
+    "Food Role" -> "Food\n--(Role)-->\nFood";
+  }
+
+  subgraph cluster2 {
+    label = "Books";
+    "Book" [fillcolor=lightblue];
+    "Book" -> "Book:Type mappings";
+    "Book Type" -> "Book:Type mappings";
+    "Book" -> "Book-->Book";
+    "Book" -> "Book-->Book";
+  }
+
+  subgraph cluster3 {
+    label = "Kites";
+    "Kite" [fillcolor=lightblue];
+    "Kite Type" -> "Kite";
+    "Kite" -> "Kite\n--(Role)-->\nKite";
+    "Kite" -> "Kite\n--(Role)-->\nKite";
+    "Kite Type" -> "Kite Type --(Role)--> Kite Type";
+    "Kite Type" -> "Kite Type --(Role)--> Kite Type";
+    "Kite Role" -> "Kite Type --(Role)--> Kite Type";
+    "Kite Role" -> "Kite\n--(Role)-->\nKite";
+  }
+
+  node [color="#D08101", fontcolor="#222222", fillcolor="#FEFE82"];
+  edge [color="#362002"];
+  
+}

@@ -1,0 +1,10 @@
+gec3 :Shoe
+#gec :Shoe, types: single, roles: single
+
+gec6 :Food
+#gec :Food, types: multiple, roles: multiple # aka GEC6
+
+gec :Book, types: multiple, roles: single
+
+gec :Kite, types: single, roles: multiple
+

@@ -1,0 +1,77 @@
+digraph G {
+  rankdir = LR;
+  style = "rounded,filled";
+  color = black;
+  fillcolor = lightgrey;
+  node [color=black, fillcolor=white, shape=box, style="rounded,filled"];
+  edge [arrowhead=dot];
+
+  subgraph cluster0 {
+    label = "Clients";
+    "Client" [fillcolor=lightblue];
+  }
+
+  subgraph cluster1 {
+    label = "Users";
+    "User" [fillcolor=lightblue];
+  }
+
+  subgraph cluster2 {
+    label = "Contacts";
+    "Contact" [fillcolor=lightblue];
+    "Contact" -> "Contact:Type mappings";
+    "Contact Type" -> "Contact:Type mappings";
+  }
+
+  subgraph cluster3 {
+    label = "NotificationGroups";
+    "NotificationGroup" [fillcolor=lightblue];
+    "NotificationGroup" -> "NotificationGroup-->NotificationGroup";
+    "NotificationGroup" -> "NotificationGroup-->NotificationGroup";
+  }
+
+  subgraph cluster4 {
+    label = "Notifications";
+    "Notification" [fillcolor=lightblue];
+  }
+
+  subgraph cluster5 {
+    label = "Templates";
+    "Template" [fillcolor=lightblue];
+    "Template" -> "Template:Type mappings";
+    "Template Type" -> "Template:Type mappings";
+  }
+
+  subgraph cluster6 {
+    label = "Preferences";
+    "Preference" [fillcolor=lightblue];
+    "Preference Type" -> "Preference";
+  }
+
+  subgraph cluster7 {
+    label = "TemplateAttributes";
+    "TemplateAttribute" [fillcolor=lightblue];
+    "TemplateAttribute" -> "TemplateAttribute:Type mappings";
+    "TemplateAttribute Type" -> "TemplateAttribute:Type mappings";
+  }
+
+  node [color="#D08101", fontcolor="#222222", fillcolor="#FEFE82"];
+  edge [color="#1E1201"];
+  "Client" -> "Client Users";
+  "User" -> "Client Users";
+  "User" -> "User Contacts";
+  "Contact" -> "User Contacts";
+  "Client" -> "NotificationGroup";
+  "Notification" -> "Notification : Group";
+  "NotificationGroup" -> "Notification : Group";
+  "Notification" -> "Template";
+  "Preference" -> "Preference Applications";
+  "User" -> "Preference Applications";
+  "Notification" -> "Preference Applications";
+  "NotificationGroup" -> "Preference Applications";
+  "Template Type" -> "Template Attribute\nRequirements";
+  "TemplateAttribute Type" -> "Template Attribute\nRequirements";
+  "Template Type" -> "Contact per Template Type\nRequirements";
+  "Contact Type" -> "Contact per Template Type\nRequirements";
+  "Template" -> "TemplateAttribute";
+}

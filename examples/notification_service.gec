@@ -1,0 +1,21 @@
+gec :Client
+  extn :Client, :User # Maps [client_id, client_user_id] => internal_user_id
+gec :User
+  extn :User, :Contact
+gec :Contact, types: multiple
+
+gec :NotificationGroup, roles: single
+  map :Client => :NotificationGroup
+  extn :Notification, :NotificationGroup, :name => "Notification : Group"
+gec :Notification
+  map :Notification => :Template
+gec :Template, types: multiple
+
+gec :Preference, types: single
+  map [:Preference, :User, :Notification, :NotificationGroup] => "Preference Applications"
+
+gec :TemplateAttribute, types: multiple
+  map ["Template Type","TemplateAttribute Type"] => "Template Attribute\nRequirements"
+  map ["Template Type","Contact Type"] => "Contact per Template Type\nRequirements"
+  #map [:Template,:TemplateAttribute] => "Template Attributes"
+  map :Template => :TemplateAttribute
