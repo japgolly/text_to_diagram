@@ -15,8 +15,8 @@ describe TextToDiagram::Gec::Grapher do
           label = "User (GEC3)";
           "User";
           "User Type" -> "User";
-          "User" -> "User->User";
-          "User" -> "User->User";
+          "User" -> "User-->User";
+          "User" -> "User-->User";
         }|)
     end
 
@@ -26,36 +26,36 @@ describe TextToDiagram::Gec::Grapher do
         subgraph cluster0 {
           label = "User (GEC3)";
           "User";
-          "User" -> "User->User";
-          "User" -> "User->User";
+          "User" -> "User-->User";
+          "User" -> "User-->User";
           #{disabledness}
           "User Type" -> "User";
         }|)
     end
 
     it "should disable the Tree node on request" do
-      gec.parse %|gec3 'User', tree: disabled|
+      gec.parse %|gec3 'User', role: disabled|
       gec.generate_gv.should be_same_graph_as(%|
         subgraph cluster0 {
           label = "User (GEC3)";
           "User";
           "User Type" -> "User";
           #{disabledness}
-          "User" -> "User->User";
-          "User" -> "User->User";
+          "User" -> "User-->User";
+          "User" -> "User-->User";
         }|)
     end
 
     it "should disable the Type and Tree nodes on request" do
-      gec.parse %|gec3 'User', tree: disabled, type: disabled|
+      gec.parse %|gec3 'User', role: disabled, type: disabled|
       gec.generate_gv.should be_same_graph_as(%|
         subgraph cluster0 {
           label = "User (GEC3)";
           "User";
           #{disabledness}
           "User Type" -> "User";
-          "User" -> "User->User";
-          "User" -> "User->User";
+          "User" -> "User-->User";
+          "User" -> "User-->User";
         }|)
     end
 
@@ -69,14 +69,14 @@ describe TextToDiagram::Gec::Grapher do
         subgraph cluster0 {
           label = "Contact (GEC6)";
           "Contact";
-          "Contact Type" -> "Contact Type --(Role)--> Contact Type";
-          "Contact Type" -> "Contact Type --(Role)--> Contact Type";
-          "Contact Type" -> "Contact:Type mappings";
           "Contact" -> "Contact:Type mappings";
+          "Contact Type" -> "Contact:Type mappings";
           "Contact" -> "Contact --(Role)--> Contact";
           "Contact" -> "Contact --(Role)--> Contact";
-          "Contact Role" -> "Contact --(Role)--> Contact";
+          "Contact Type" -> "Contact Type --(Role)--> Contact Type";
+          "Contact Type" -> "Contact Type --(Role)--> Contact Type";
           "Contact Role" -> "Contact Type --(Role)--> Contact Type";
+          "Contact Role" -> "Contact --(Role)--> Contact";
         }|)
     end
 
@@ -91,15 +91,15 @@ describe TextToDiagram::Gec::Grapher do
           label = "User (GEC3)";
           "User";
           "User Type" -> "User";
-          "User" -> "User->User";
-          "User" -> "User->User";
+          "User" -> "User-->User";
+          "User" -> "User-->User";
         }
         subgraph cluster1 {
           label = "Book (GEC3)";
           "Book";
           "Book Type" -> "Book";
-          "Book" -> "Book->Book";
-          "Book" -> "Book->Book";
+          "Book" -> "Book-->Book";
+          "Book" -> "Book-->Book";
         }
         "User" -> "User Books";
         "Book" -> "User Books";
