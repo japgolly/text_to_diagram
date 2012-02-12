@@ -1,5 +1,13 @@
+h1. Usage
+
+h3. Generate GEC-style ERD diagrams
+
+bq. @$@ [*@bin/gec_grapher examples/notification_service.gec@*]
+@Reading examples/notification_service.gec@
+@Creating examples/notification_service.gec.gv@
+@Creating examples/notification_service.gec.png@
+@Done.@
+
 h1. Testing
 
-To test:
-
-bc. bin/rspec
+- To test: := @bin/rspec@
