@@ -1,0 +1,13 @@
+~*
+.~*
+*.bak
+*.log
+*.tmp
+*.out
+*.err
+*.pid
+*.swp
+.settings
+.metadata
+.idea
+target
