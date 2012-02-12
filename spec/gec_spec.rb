@@ -59,5 +59,26 @@ describe TextToDiagram::Gec::Grapher do
         }|)
     end
 
-  end
+  end # context
+
+  context "when generating a 6-node GEC" do
+
+    it "should generate it all by default" do
+      gec.parse %|gec6 'Contact'|
+      gec.generate_gv.should be_same_graph_as(%|
+        subgraph cluster0 {
+          label = "Contact (GEC6)";
+          "Contact";
+          "Contact Type" -> "Contact Type --(Role)--> Contact Type";
+          "Contact Type" -> "Contact Type --(Role)--> Contact Type";
+          "Contact Type" -> "Contact:Type mappings";
+          "Contact" -> "Contact:Type mappings";
+          "Contact" -> "Contact --(Role)--> Contact";
+          "Contact" -> "Contact --(Role)--> Contact";
+          "Contact Role" -> "Contact --(Role)--> Contact";
+          "Contact Role" -> "Contact Type --(Role)--> Contact Type";
+        }|)
+    end
+
+  end # context
 end
