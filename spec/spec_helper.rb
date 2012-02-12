@@ -1,4 +1,4 @@
-Bundler.require :test
+Bundler.require :default, :test
 #$:<< File.expand_path('../../lib',__FILE__)
 
 module TextToDiagram
@@ -14,9 +14,7 @@ module TextToDiagram
 
     def wrap_graph(inner_graph)
       %|digraph G {
-        style="rounded,filled"; color=black; fillcolor=lightgrey;
-        node [color=black,fillcolor=white,shape=box,style="rounded,filled"];
-        edge [arrowhead=dot];
+        #{TextToDiagram::Style.default.scope(:gec, :normal).to_gv}
         #{inner_graph}
       }|
     end

@@ -1,0 +1,19 @@
+gec:
+  normal:
+    style: "rounded,filled"
+    color: black
+    fillcolor: lightgrey
+    node:
+      color: black
+      fillcolor: white
+      shape: box
+      style: "rounded,filled"
+    edge:
+      arrowhead: dot
+  disabled:
+    node:
+      fillcolor: lightgrey
+      fontcolor: "#aaaaaa"
+      color: "#aaaaaa"
+    edge:
+      color: "#aaaaaa"

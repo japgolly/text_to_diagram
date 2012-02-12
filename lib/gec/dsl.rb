@@ -3,8 +3,9 @@ module TextToDiagram
     class Dsl
       attr_reader :clusters
 
-      def initialize
+      def initialize(style)
         @clusters= []
+        @style= style
       end
 
       def add(options, key, normal, disabled, value)
@@ -28,11 +29,11 @@ module TextToDiagram
         2.times.each{ add options, :tree, lines, disabled, %|#{entity} -> #{tree}| }
 
         unless disabled.empty?
-          lines<< 'node[fillcolor=lightgrey,fontcolor="#aaaaaa",color="#aaaaaa"]; edge[color="#aaaaaa"]'
+          lines<< @style.scope(:disabled).to_gv
           lines.concat disabled
         end
 
-        @clusters<< lines.map{|l| "#{l};"}.join("\n")
+        @clusters<< lines.map{|l| l.sub /;?\Z/,';'}.join("\n")
       end
 
       def disabled; :disabled end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'gec'
 
-disabledness= 'node[fillcolor=lightgrey,fontcolor="#aaaaaa",color="#aaaaaa"]; edge[color="#aaaaaa"];'
+disabledness= TextToDiagram::Style.default.scope(:gec, :disabled).to_gv
 
 describe TextToDiagram::Gec::Grapher do
   let(:gec) {described_class.new}

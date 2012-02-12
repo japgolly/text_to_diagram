@@ -1,4 +1,5 @@
 require 'gec/dsl'
+require 'style'
 
 module TextToDiagram::Gec
   class Grapher
@@ -7,7 +8,8 @@ module TextToDiagram::Gec
     end
 
     def reset!
-      @dsl= Dsl.new
+      @style= TextToDiagram::Style.default.scope(:gec)
+      @dsl= Dsl.new(@style)
       self
     end
 
@@ -25,9 +27,7 @@ module TextToDiagram::Gec
 
       # Generate complete graph
 %|digraph G {
-style="rounded,filled"; color=black; fillcolor=lightgrey;
-node [color=black,fillcolor=white,shape=box,style="rounded,filled"];
-edge [arrowhead=dot];
+#{@style.scope(:normal).to_gv}
 
 #{cluster_gv}
 }|
