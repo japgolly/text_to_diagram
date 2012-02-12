@@ -1,3 +1,4 @@
+require 'active_support/core_ext'
 require 'active_support/inflector'
 
 module TextToDiagram
@@ -11,15 +12,8 @@ module TextToDiagram
         @style= style
       end
 
-      def add(option, normal, disabled, value, times=1)
-        case option
-        when nil then normal
-        when :disabled then disabled
-        else raise "Unsupported value #{option.inspect}. Only :disabled is supported."
-        end.concat([value] * times)
-      end
-
       def gec3(name,options={})
+        options.assert_valid_keys :type, :tree
         entity= %|"#{name}"|
         type= %|"#{name} Type"|
         tree= %|"#{name}->#{name}"|
@@ -40,6 +34,7 @@ module TextToDiagram
       end
 
       def gec6(name,options={})
+        options.assert_valid_keys :type, :role
         entity= %|"#{name}"|
         type= %|"#{name} Type"|
         role= %|"#{name} Role"|
@@ -67,6 +62,7 @@ module TextToDiagram
       end
 
       def extn(entity_a, entity_b, options={})
+        options.assert_valid_keys :name
         name= options[:name] || "#{entity_a} #{entity_b.to_s.pluralize}"
         name= %|"#{name}"|
         entity_a= %|"#{entity_a}"|
@@ -77,6 +73,16 @@ module TextToDiagram
       end
 
       def disabled; :disabled end
-    end
+
+      private
+        def add(option, normal, disabled, value, times=1)
+          case option
+          when nil then normal
+          when :disabled then disabled
+          else raise "Unsupported value #{option.inspect}. Only :disabled is supported."
+          end.concat([value] * times)
+        end
+
+    end # class
   end
 end
