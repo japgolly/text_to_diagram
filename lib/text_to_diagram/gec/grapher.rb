@@ -1,5 +1,6 @@
 require 'text_to_diagram/gec/dsl'
 require 'text_to_diagram/style'
+require 'text_to_diagram/helpers'
 
 module TextToDiagram::Gec
   class Grapher
@@ -22,14 +23,14 @@ module TextToDiagram::Gec
       # Generate clusters
       i= -1
       cluster_gv= @dsl.clusters.map do |c|
-        "subgraph cluster#{i+=1} {\n#{c}\n}"
+        "subgraph cluster#{i+=1} {\n#{c.indent 2}\n}"
       end.join("\n\n")
 
       # Generate complete graph
 %|digraph G {
-#{@style.scope(:normal).to_gv}
+#{@style.scope(:normal).to_gv.indent 2}
 
-#{cluster_gv}
+#{cluster_gv.indent 2}
 }|
     end
 
