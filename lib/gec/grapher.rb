@@ -1,4 +1,4 @@
-require 'gec/gec_dsl'
+require 'gec/dsl'
 
 module TextToDiagram::Gec
   class Grapher

@@ -1,2 +1,2 @@
-require 'gec/gec_grapher'
+require 'gec/grapher'
 
