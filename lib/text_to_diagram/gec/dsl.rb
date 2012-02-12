@@ -75,8 +75,17 @@ module TextToDiagram
         @externals<< %|#{entity_b} -> #{name}|
       end
 
-      def map(*lines)
-        @externals.concat lines.map{|l| l.sub /;\Z/,''}
+      def map(mappings)
+        mappings.each do |from,to|
+          if from.is_a?(Array)
+            from.each {|src| map src => to}
+          elsif to.is_a?(Array)
+            to.each {|dest| map from => dest}
+          else
+            @externals<< %|"#{from}" -> "#{to}"|
+          end
+        end
+        self
       end
 
       %w[disabled single multiple].each do |s|
