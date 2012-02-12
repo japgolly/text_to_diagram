@@ -34,17 +34,28 @@ module TextToDiagram
       Style.new(style)
     end
 
-    def to_gv
-      lines= style.map do |k,v|
-        if v.is_a?(Hash)
-          values= v.to_a.map do |inner_key,inner_value|
-            "#{inner_key}=#{escape_value inner_value}"
-          end.join(', ')
-          "#{k} [#{values}];"
-        else
-          "#{k} = #{escape_value v};"
-        end
-      end.join("\n")
+    def to_gv(multiple_attributes=true)
+      if multiple_attributes
+        # Generate a bunch of lines
+        style.map do |k,v|
+          if v.is_a?(Hash)
+            values= scope(k).to_gv(false)
+            "#{k} [#{values}];"
+          else
+            "#{k} = #{escape_value v};"
+          end
+        end.join("\n")
+      else
+        # Put it all on one line
+        style.to_a.map do |inner_key,inner_value|
+          "#{inner_key}=#{escape_value inner_value}"
+        end.join(', ')
+      end
+    end
+
+    def stylise(node)
+      return node if style.empty?
+      "#{node} [#{to_gv false}]"
     end
 
     private

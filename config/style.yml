@@ -11,6 +11,16 @@ gec:
       style: "rounded,filled"
     edge:
       arrowhead: dot
+  entity:
+    node:
+      fillcolor: lightblue
+  external:
+    node:
+      color: "#D08101"
+      fontcolor: "#222222"
+      fillcolor: "#FEFE82"
+    edge:
+      color: "#1E1201"
   disabled:
     node:
       fillcolor: lightgrey

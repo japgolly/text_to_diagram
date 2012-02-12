@@ -35,6 +35,7 @@ module TextToDiagram::Gec
 
 #{cluster_gv.indent 2}
 
+#{@style.scope(:external).to_gv.indent 2}
 #{external_gv.indent 2}
 }|
     end

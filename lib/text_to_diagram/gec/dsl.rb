@@ -22,14 +22,14 @@ module TextToDiagram
 
       def gec(name,options={})
         options.assert_valid_keys :label, :type, :types, :role, :roles
-        entity= %|"#{name}"|
-        type= %|"#{name} Type"|
-        role= %|"#{name} Role"|
+        entity= normalise_node_name(name)
+        type= normalise_node_name "#{name} Type"
+        role= normalise_node_name "#{name} Role"
 
         lines= []
         disabled= []
         lines<< %|label = "#{options[:label] || name.to_s.pluralize}"|
-        lines<< entity
+        lines<< @style.scope(:entity, :node).stylise(entity)
 
         case options[:types]
         when nil
@@ -67,9 +67,9 @@ module TextToDiagram
       def extn(entity_a, entity_b, options={})
         options.assert_valid_keys :name
         name= options[:name] || "#{entity_a} #{entity_b.to_s.pluralize}"
-        name= %|"#{name}"|
-        entity_a= %|"#{entity_a}"|
-        entity_b= %|"#{entity_b}"|
+        name= normalise_node_name(name)
+        entity_a= normalise_node_name(entity_a)
+        entity_b= normalise_node_name(entity_b)
 
         @externals<< %|#{entity_a} -> #{name}|
         @externals<< %|#{entity_b} -> #{name}|
@@ -82,7 +82,7 @@ module TextToDiagram
           elsif to.is_a?(Array)
             to.each {|dest| map from => dest}
           else
-            @externals<< %|"#{from}" -> "#{to}"|
+            @externals<< %|#{normalise_node_name from} -> #{normalise_node_name to}|
           end
         end
         self
@@ -99,6 +99,13 @@ module TextToDiagram
           when :disabled then disabled
           else raise "Unsupported value #{option.inspect}. Only :disabled is supported."
           end.concat([value] * times)
+        end
+
+        def normalise_node_name(name)
+          name= name.to_s
+            .gsub("\n",'\n')
+            .gsub('"','')
+          %|"#{name}"|
         end
 
     end # class
