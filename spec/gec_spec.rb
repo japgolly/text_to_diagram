@@ -3,7 +3,7 @@ require 'gec'
 
 disabledness= 'node[fillcolor=lightgrey,fontcolor="#aaaaaa",color="#aaaaaa"]; edge[color="#aaaaaa"];'
 
-describe TextToDiagram::GecGrapher do
+describe TextToDiagram::Gec::Grapher do
   let(:gec) {described_class.new}
 
   context "when generating a 3-node GEC" do
