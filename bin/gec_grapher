@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require :default
+$:<< File.expand_path('../../lib',__FILE__)
+require 'text_to_diagram/gec'
+
+pic_fmt= 'png'
+
+# Declare and validate args
+opts= Slop.parse! ARGV, strict: true, help: true do
+  banner "Usage: #{File.basename __FILE__} [options] <GEC input file>"
+  on :g, :graphviz=, 'Graphviz file to generate'
+  on :G, :graphviz_only, "Only generate a graphviz file, don't create a diagram."
+  on :T, :diagram_format=, "Diagram file format. (Defaults to #{pic_fmt})"
+  on :o, :diagram_output=, 'Diagram file to generate.'
+end
+exit 0 if opts.present?(:help)
+(puts opts.help; exit 1) unless ARGV.length == 1
+
+# Process args
+gec_in= ARGV[0]
+gv_out= opts[:graphviz] || "#{gec_in}.gv"
+pic_fmt= opts[:diagram_format] || pic_fmt
+pic_out= opts[:diagram_output] || "#{gec_in}.#{pic_fmt}"
+
+# Parse and generate
+g= TextToDiagram::Gec::Grapher.new
+puts "Reading #{gec_in}"
+g.parse File.read(gec_in)
+puts "Creating #{gv_out}"
+File.write gv_out, g.generate_gv
+unless opts.present? :graphviz_only
+  puts "Creating #{pic_out}"
+  `dot -T#{pic_fmt} -o#{pic_out} #{gv_out}`
+end
+
+puts "Done."

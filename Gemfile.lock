@@ -15,6 +15,7 @@ GEM
     rspec-expectations (2.8.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.8.0)
+    slop (3.0.4)
 
 PLATFORMS
   ruby
@@ -22,3 +23,4 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   rspec
+  slop
