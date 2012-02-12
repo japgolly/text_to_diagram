@@ -1,5 +1,6 @@
 gec:
   normal:
+    rankdir: LR
     style: "rounded,filled"
     color: black
     fillcolor: lightgrey
