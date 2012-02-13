@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
-require 'rubygems'
-require 'bundler/setup'
-Bundler.require :default
-$:<< File.expand_path('../../lib',__FILE__)
+require File.expand_path('../.env.rb',__FILE__)
 require 'text_to_diagram/gec'
 
 pic_fmt= 'png'
