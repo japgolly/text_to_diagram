@@ -17,7 +17,16 @@ relations= []
 
 # Read data
 src_file= ARGV[0]
-src_rows= File.read(src_file).split(/[\r\n]+/).reject{|l| l =~ /^\s*(#.*)?$/}
+src_rows= File.read(src_file)
+              .gsub("\r","\n")
+              .gsub(/#.*?(?=\n)/,"") # Remove comments
+              .gsub(/^(.*?\S.*?<.*?>\s*)(\S.*?)(<.*?>\s*?\S.*)$/,"\\1\\2\n\\2\\3") # Expand A <> B <> C
+              .gsub(/^(.*?\S.*?<.*?>\s*)(\S.*?)(<.*?>\s*?\S.*)$/,"\\1\\2\n\\2\\3") # Expand A <> B <> C <> D
+              .split(/\n+/)
+              .map(&:strip)
+              .reject(&:empty?)
+
+# Parse data
 ei= 0
 src_rows.each do |l|
   raise "Incorrect format: #{l.inspect}" unless l =~ /^\s*(.+?)\s*<\s*(.+?)\s* ([^>]+)\s* (.+?)\s*>\s*(.+?)\s*$/
