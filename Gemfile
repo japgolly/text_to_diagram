@@ -1,10 +1,9 @@
 source :rubygems
 
 gem 'activesupport'
-gem 'slop'
+gem 'slop' # CLI parser
 
 # Testing
 group :test do
   gem 'rspec'
-  gem 'autotest'
 end
