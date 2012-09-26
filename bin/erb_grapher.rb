@@ -6,7 +6,7 @@ unless ARGV.length == 1
 end
 
 def change_ext(filename,ext)
-  filename= File.basename(filename).sub(/\.[^.]*$/,'') unless filename.end_with?(".#{ext}")
+  #filename= filename.sub(/\.[^.]*$/,'') unless filename.end_with?(".#{ext}")
   "#{filename}.#{ext}"
 end
 def to_label(str)
@@ -30,37 +30,41 @@ puts "  #{entities.size} entities."
 puts "  #{relations.size} relationships."
 
 # Create graph
-entity_data= entities.map{|k,v| %!#{v} [label=#{to_label k}];!}.join "\n"
+entity_data= entities.map{|k,v| %!#{v} [label=#{to_label k}];!}
 ri=0
 relation_data= relations.map do |r|
   id= "r#{ri+=1}"
-  %!#{id} [label=#{to_label r[:name]}]; ! +\
-  %!#{r[:e1]} -> #{id} [label=#{to_label r[:r1]}];! +\
-  %!#{id} -> #{r[:e2]} [label=#{to_label r[:r2]}];!
-end.join("\n")
-graph= %!digraph ERD {
-node [style=filled];
+  %!
+    #{id} [label=#{to_label r[:name]}];
+    #{r[:e1]} -> #{id} [label=#{to_label r[:r1]}];
+    #{id} -> #{r[:e2]} [label=#{to_label r[:r2]}];
+  !.strip.gsub(/\s*\n+\s*/, ' ')
+end
+graph= <<-EOB
+digraph ERD {
+  node [style=filled];
 
-# Entities
-node [shape=box, color="#1117A8", fontcolor="#1117A8", fillcolor="#96CAFE"];
-#{entity_data}
+  // Entities
+  node [shape=box, color="#1117A8", fontcolor="#1117A8", fillcolor="#96CAFE"];
+#{entity_data.map{|l| "  #{l}"}.join "\n"}
 
-# Relations
-node [shape=diamond, color="#FEBB51", fontcolor="#333333", fillcolor="#FEFE82"];
-edge [dir=none];
-#{relation_data}
-}!
+  // Relations
+  node [shape=diamond, color="#FEBB51", fontcolor="#333333", fillcolor="#FEFE82"];
+  edge [dir=none];
+#{relation_data.map{|l| "  #{l}"}.join "\n"}
+}
+EOB
 
 # Save graphviz file
-dot_file= change_ext(src_file,'dot')
-puts "Creating graph src: #{dot_file}"
-File.open(dot_file,'w') {|fout| fout<<graph}
+gv_file= change_ext(src_file,'gv')
+puts "Creating graph src: #{gv_file}"
+File.write gv_file, graph
 
 # Create graph
 graph_format= "png"
 graph_file= change_ext(src_file,graph_format)
 puts "Creating graph: #{graph_file}"
-`dot -T#{graph_format} -o#{graph_file} #{dot_file}`
+system "dot -T#{graph_format} -o#{graph_file.inspect} #{gv_file.inspect}"
 
 # Done
 puts "Done."
