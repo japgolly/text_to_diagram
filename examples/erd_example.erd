@@ -1,0 +1,19 @@
+User Account <1 providing access 0..1> User Profile
+User Profile <2 linking 0..n> Friendship
+User Profile <1..n participating 0..n> Deal
+User Profile <0..n specifying 1> Locale
+Deal <1 representing 1..n> Deal Revision
+User Profile <2 tracking 0..n> Debt
+User Profile <1..n tracking 0..n> Financial Event
+Financial Event <1 comprising 1..n> Portion
+Portion <1 comprising 1..n> Allocation
+Portion <0..n linking 0..1> Deal
+Allocation <0..n allocating 1> User Profile
+Allocation <0..n contributing & explaining 0..n> Debt
+Liability Rules <1 providing liability 0..1> Portion
+Liability Rules <0..1 containing 0..1> Deal
+Financial Event <1 extending 0..1> Transaction
+Financial Event <1 extending 0..1> Transfer
+Financial Event <1 extending 0..1> Request
+Financial Event <1 extending 0..1> Request Payment
+Request <1 paying off 0..n> Request Payment
